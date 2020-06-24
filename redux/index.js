@@ -1,11 +1,6 @@
 const initialState = {
     showPopap: false,
     success: false,
-    validate: {
-        phone: "",
-        name: "",
-        message: ""
-    },
     phone: "",
     name: "",
     message: ""
@@ -45,41 +40,18 @@ export default (state = initialState, action) => {
     };
 
     // SUBMIT
+    // По идеи попап должен закрываться после ответа с сервер (код 200)
     if (action.type === "SUBMIT") {
-        let validate = {
-            ...state.validate
-        };
-
-        if (state.phone !== "") {
-            validate.phone = "success";
-        } else {
-            validate.phone = "error";
-        };
-
-        if (state.name !== "") {
-            validate.name = "success";
-        } else {
-            validate.name = "error";
-        };
-
-        if (state.message !== "") {
-            validate.message = "success";
-        } else {
-            validate.message = "error";
-        };
-
-        if (validate.phone === "success" && validate.phone === validate.name && validate.phone === validate.message) {
+        let { phone, name } = state;
+        if (phone.length === 10 && name !== "") {
             return {
                 ...state,
+                showPopap: false,
                 success: true,
-                showPopap: false
             };
         };
 
-        return {
-            ...state,
-            validate
-        };
+        return state;
     };
 
     return state;

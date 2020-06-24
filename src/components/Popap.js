@@ -5,12 +5,11 @@ import { Form, Input, Button } from 'antd';
 
 export default () => {
     const dispatc = useDispatch();
-    const { phone, name, message, validate } = useSelector((state) => {
+    const { phone, name, message } = useSelector((state) => {
         return {
             phone: state.phone,
             name: state.name,
-            message: state.message,
-            validate: state.validate
+            message: state.message
         };
     });
 
@@ -18,8 +17,15 @@ export default () => {
         <Form>
             <Form.Item
                 label="Телефон"
-                validateStatus={validate.phone}
-                required={true}
+                name="phon"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Введите телефон, например "0965555555"',
+                    max: 10,
+                    pattern: "[0-9]{10}"
+                  },
+                ]}
                 hasFeedback
             >
                 <Input
@@ -31,8 +37,13 @@ export default () => {
 
             <Form.Item
                 label="Имя"
-                validateStatus={validate.name}
-                required={true}
+                name="name"
+                rules={[
+                    {
+                      required: true,
+                      message: 'Введите имя!',
+                    },
+                  ]}
                 hasFeedback
             >
                 <Input
@@ -43,7 +54,7 @@ export default () => {
 
             <Form.Item
                 label="Сообщение"
-                validateStatus={validate.message}
+                name="message"
                 hasFeedback
             >
                 <Input
@@ -55,7 +66,8 @@ export default () => {
             <Form.Item>
                 <Button
                     type="primary"
-                onClick={() => {dispatc({type: "SUBMIT"})}}
+                    htmlType="submit"
+                    onClick={() => {dispatc({type: "SUBMIT"})}}
                 >
                     Отправить
             </Button>
